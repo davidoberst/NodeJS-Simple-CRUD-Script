@@ -1,0 +1,28 @@
+1. paso 1, levantar el servidor con express e instalar lo necesario
+
+npm init -y
+npm install express
+npm install --save-dev nodemon
+
+
+2. paso, crear un archivo javascript que maneje el servidor, "server.js" dentro de ese archivo crearemos el servidor
+
+const express = require("express"); //IMPORTAR EXPRESS
+const app = express(); //CREAR "APP" EXPRESS
+const PORT = process.env.PORT|| 3000; //ASIGNAR UN PUERTO
+
+app.use(express.json()); //para que Express pueda parsear JSON en el body de peticiones
+
+//RUTA DE PRUEBA
+app.get("/",(req,res) =>{
+    res.json({message : "servidor funcionando"});
+});
+
+
+//arrancar el servidor y escuchar en el puerto
+app.listen(PORT, ()=>{
+    console.log(`Servidor escuchando en http://localhost:${PORT}`);
+})
+
+
+
