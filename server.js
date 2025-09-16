@@ -15,8 +15,6 @@ app.listen(PORT, ()=>{
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
 })
 
-
-
 let items = [];  // simulamos una "base de datos" en memoria
 
 //POST 
@@ -46,3 +44,32 @@ app.post("/items", (req, res) => {
 app.get("/items",(req,res)=>{
     res.json(items)
 })
+
+
+app.delete("/items/:id",(req,res) =>{
+  const { id } = req.params;
+    const idNum = parseInt(id, 10); // convertimos el string a número base 10
+  if (isNaN(idNum)) {
+    return res.status(400).json({ error: "El ID debe ser un número válido" });
+  }
+
+  const index = items.findIndex(item => item.id === idNum);
+
+  // Si no existe, devolvemos error 404
+  if (index === -1) {
+    return res.status(404).json({ error: "Item no encontrado" });
+  }
+
+  // Eliminamos el item
+  const eliminado = items.splice(index, 1)[0]; // splice devuelve un array, por eso [0]
+
+  // Respondemos con el item eliminado
+  res.json({
+    mensaje: "Item eliminado correctamente",
+    eliminado
+  });
+
+
+
+})
+
