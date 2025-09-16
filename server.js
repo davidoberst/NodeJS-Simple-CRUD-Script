@@ -69,6 +69,38 @@ app.delete("/items/:id",(req,res) =>{
     eliminado
   });
 
+// PUT - editar un item por id
+app.put("/items/:id", (req, res) => {
+  const { id } = req.params;
+  const { nombre } = req.body;
+
+  // Validar ID
+  const idNum = parseInt(id, 10);
+  if (isNaN(idNum)) {
+    return res.status(400).json({ error: "El ID debe ser un número válido" });
+  }
+
+  // Buscar item por id
+  const item = items.find(item => item.id === idNum);
+  if (!item) {
+    return res.status(404).json({ error: "Item no encontrado" });
+  }
+
+  // Validar nombre
+  if (!nombre || typeof nombre !== "string") {
+    return res.status(400).json({
+      error: 'El campo "nombre" es requerido y debe ser un texto',
+    });
+  }
+
+  // Actualizar item
+  item.nombre = nombre;
+
+  res.json({
+    mensaje: "Item actualizado correctamente",
+    actualizado: item
+  });
+});
 
 
 })
